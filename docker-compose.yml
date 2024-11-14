@@ -1,15 +1,42 @@
-version: '3'
-services:
-  app:
-    build: .
-    ports:
-      - "8080:8081"
-    environment:
-      - DB_CONNECTION=mongodb://mongodb:27017/mydb
-    depends_on:
-      - mongodb
+version: '3.8'
 
-  mongodb:
-    image: mongo
+services:
+  # Conteneur pour le backend Node.js
+  node-app:
+    build: .
+    container_name: node-backend
     ports:
-      - "27017:27017"
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - influxdb
+    volumes:
+      - .:/app
+    networks:
+      - timeseries-network
+
+  # Conteneur pour la base de données InfluxDB
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password123
+      - DOCKER_INFLUXDB_INIT_ORG=my-org
+      - DOCKER_INFLUXDB_INIT_BUCKET=my-bucket
+      - DOCKER_INFLUXDB_INIT_RETENTION=0
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-super-secret-auth-token
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    networks:
+      - timeseries-network
+
+volumes:
+  influxdb-data:
+
+networks:
+  timeseries-network:

@@ -1,20 +1,20 @@
-# Utiliser l'image de Node.js
-FROM node:16-alpine
+# Utilisation de l'image officielle Node.js comme base
+FROM node:18
 
-# Créer le répertoire de l'application
+# Définir le répertoire de travail dans le conteneur
 WORKDIR /app
 
-# Copier package.json et package-lock.json
+# Copier le fichier package.json et package-lock.json dans le conteneur
 COPY package*.json ./
 
 # Installer les dépendances
 RUN npm install
 
-# Copier le reste du code
+# Copier le reste des fichiers du projet
 COPY . .
 
-# Exposer le port
+# Exposer le port de l'application
 EXPOSE 3000
 
-# Démarrer l'application
+# Commande pour démarrer l'application
 CMD ["npm", "start"]
