@@ -6,7 +6,7 @@ Ce projet est une application Node.js avec Express qui permet de gérer des sér
 ### Prérequis
 Avant de commencer, assurez-vous d'avoir installé :
 - [Node.js](https://nodejs.org/) (v12 ou supérieur)
-- [Docker](https://www.docker.com/) (si vous utilisez Docker pour déployer InfluxDB)
+- [Docker](https://www.docker.com/) (si vous utilisez Docker pour déployer INFLUXDB)
 - InfluxDB (v2 ou supérieur)
 
 ### Installation
