@@ -55,7 +55,7 @@ class TimeSeriesService {
         await writeApi.close();
     }
 
-    // Supprimer un point de données basé sur le timestamp
+    // Enlever un point de données basé sur le timestamp
     static async deleteData(timestamp) {
         const fluxQuery = `from(bucket: "${bucket}")
                            |> range(start: -1d)
