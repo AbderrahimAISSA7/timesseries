@@ -1,7 +1,7 @@
 const { InfluxDB, Point } = require('@influxdata/influxdb-client');
 
 const url = 'http://influxdb:8086'; // Adapter selon l'environnement
-const token = 'PuVoQrUYN29g5njAyk9ozaIBAvFlsqCdfHmvP0NAfNrqLrDutJSlQ5HK9qt8NG5e--WDHQmMAJWyrvvZkGsSKw==';
+const token = '20bTAig_l3pqLJ0OY8fPKpkp1RmQcceHekIqG3Ye2G6IyPK8z81XFS-Day2wFy86kC-9YEYiXJvStLIRadTG6w==';
 const org = 'my-org';
 const bucket = 'my-bucket';
 
