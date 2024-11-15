@@ -34,6 +34,6 @@ Avant de commencer, assurez-vous d'avoir installé :
 
 ### Utilisation avec Docker (Optionnel)
 Pour exécuter InfluxDB avec Docker, utilisez le fichier docker-compose.yml inclus dans le projet :
-    ```bash
-    docker-compose up -d
+   ```bash
+   docker-compose up -d
   
