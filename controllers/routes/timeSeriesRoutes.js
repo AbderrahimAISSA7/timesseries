@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const TimeSeriesController = require('../controllers/TimeSeriesController');
+const TimeSeriesController = require('../TimeSeriesController');
 
-// Routes pour les données temporelles
+// Routes for time series data
 router.post('/', TimeSeriesController.createDataPoint);
 router.get('/', TimeSeriesController.readData);
 router.put('/:timestamp', TimeSeriesController.updateDataPoint);

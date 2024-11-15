@@ -1,5 +1,5 @@
 const express = require('express');
-const TimeSeriesRoutes = require('./routes/TimeSeriesRoutes');  // Import des routes
+const { InfluxDB, Point } = require('@influxdata/influxdb-client');
 const app = express();
 const port = 3000;
 
@@ -23,6 +23,20 @@ app.post('/api/timeseries', (req, res) => {
     }
 
     try {
+        // Validation et parsing des données
+        const parsedTemperature = parseFloat(temperature);
+        const parsedHumidity = parseFloat(humidity);
+        const parsedTimestamp = new Date(timestamp);
+
+        if (isNaN(parsedTemperature) || isNaN(parsedHumidity)) {
+            throw new Error('Temperature or humidity must be valid numbers');
+        }
+        if (isNaN(parsedTimestamp.getTime())) {
+            throw new Error('Timestamp must be a valid date');
+        }
+
+        console.log('Parsed values:', { parsedTemperature, parsedHumidity, parsedTimestamp });
+
         // Création du point
         const point = new Point('weather')
             .floatField('temperature',Number(temperature) )
@@ -66,6 +80,9 @@ app.get('/api/timeseries', async (req, res) => {
     const queryApi = influxDB.getQueryApi(org);
     const fluxQuery = `from(bucket: "${bucket}")
                    |> range(start: -30d)`;
+
+
+
     try {
         const rows = [];
         console.log('Executing query:', fluxQuery); // Debug log
@@ -100,6 +117,7 @@ app.put('/api/timeseries', async (req, res) => {
     if (!temperature || !humidity || !timestamp) {
         return res.status(400).json({ error: 'Missing required fields: temperature, humidity, or timestamp' });
     }
+
     try {
         console.log('Received data for update:', { temperature, humidity, timestamp });
 
@@ -107,7 +125,10 @@ app.put('/api/timeseries', async (req, res) => {
             .floatField('temperature',Number(temperature) )
             .floatField('humidity', Number(humidity))
             .timestamp(new Date(timestamp));
+
+
         console.log('Point to write for update:', point);
+
         // Écrire le point dans InfluxDB
         writeApi.writePoint(point);
         writeApi.flush()
@@ -125,6 +146,7 @@ app.put('/api/timeseries', async (req, res) => {
     }
 });
 
+
 // Route DELETE pour supprimer des données
 app.delete('/api/timeseries', async (req, res) => {
     const { timestamp } = req.body;
@@ -136,6 +158,7 @@ app.delete('/api/timeseries', async (req, res) => {
     console.error("InfluxDB ne prend pas en charge la suppression directe via l'API ou Flux.");
     res.status(501).json({ error: 'Direct deletion of data in InfluxDB is not supported.' });
 });
+
 
 // Fermeture de writeApi à la fin de l'application
 process.on('SIGINT', () => {
