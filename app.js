@@ -1,5 +1,5 @@
 const express = require('express');
-const { InfluxDB, Point } = require('@influxdata/influxdb-client');
+const TimeSeriesRoutes = require('./routes/TimeSeriesRoutes');  // Import des routes
 const app = express();
 const port = 3000;
 
